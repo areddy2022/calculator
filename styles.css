@@ -1,0 +1,49 @@
+* {
+    box-sizing: border-box;
+}
+
+.chassis {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    align-items: center;
+    width: 400px;
+}
+
+.row {
+    display: flex;
+    min-width: 100%;
+    flex-grow: 1;
+    justify-content: space-between;
+    align-items: stretch;
+}
+
+.ansbar {
+    height: 100px;
+    min-width: 100%;
+    font-size: 40px;
+    padding: 0 20px;
+    display: flex;
+    flex: 1;
+    justify-content: flex-end;
+    align-items: center;
+    border: 2px solid black;
+}
+
+button {
+    height: 100px;
+    width: 100px;
+    font-size: 20px;
+    display: flex;
+    flex-direction: row;
+    flex: 1 1 100;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid black;
+    min-height: 100%;
+ }
+
+#num0 {
+    display: flex;
+    flex: 2;
+}
