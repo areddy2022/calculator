@@ -154,7 +154,11 @@ function eventHandler(currentButton) {
             display(currentNumber);
             break;
         case ".":
-            
+            if(!(currentNumber.includes("."))){
+                currentNumber.push(".");
+                display(currentNumber);
+            }
+            break;
     }
 }
 
@@ -195,7 +199,11 @@ function display(numberOnScreen) {
         document.querySelector(".ansbar").textContent = numberOnScreen; 
     }
     else if (typeof numberOnScreen != "number") {
-        document.querySelector(".ansbar").textContent = castToNumber(numberOnScreen);
+        let num = "";
+        for (index in numberOnScreen) {
+            num += numberOnScreen[index];
+        }
+        document.querySelector(".ansbar").textContent = num;
     }
     else {
         document.querySelector(".ansbar").textContent = truncate(numberOnScreen);
