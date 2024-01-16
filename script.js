@@ -22,6 +22,8 @@ const BUTTON_MAPPINGS = {
     compute: "compute",
 }
 
+const ERROR_MESSAGE = "R U FR?";
+
 const buttons = document.querySelectorAll("button");
 
 let currentButton;
@@ -46,8 +48,15 @@ function eventHandler(currentButton) {
     }
     switch(mappedButton){
         case "add":
-            if (currentOp == undefined || currentOp != "add") {
+            if (currentOp == undefined) {
                 storedNum = castToInt(currentNumber);
+                currentNumber = [];
+                currentOp = "add";
+                break;
+            }
+            else if(currentOp != "add"){
+                storedNum = operationDispatcher(currentOp);
+                display(storedNum);
                 currentNumber = [];
                 currentOp = "add";
                 break;
@@ -65,15 +74,29 @@ function eventHandler(currentButton) {
                 currentOp = "subtract";
                 break;
             }
+            else if(currentOp != "subtract"){
+                storedNum = operationDispatcher(currentOp);
+                display(storedNum);
+                currentNumber = [];
+                currentOp = "subtract";
+                break;
+            }
             else {
-                storedNum = subtract(storedNum, castToInt(currentNumber), currentOp);
+                storedNum = subtract(storedNum, castToInt(currentNumber));
                 display(storedNum);
                 currentNumber = [];
                 break;
             }
         case "multiply":
-            if (currentOp == undefined || currentOp != "multiply") {
+            if (currentOp == undefined) {
                 storedNum = castToInt(currentNumber);
+                currentNumber = [];
+                currentOp = "multiply";
+                break;
+            }
+            else if(currentOp != "multiply"){
+                storedNum = operationDispatcher(currentOp);
+                display(storedNum);
                 currentNumber = [];
                 currentOp = "multiply";
                 break;
@@ -84,17 +107,48 @@ function eventHandler(currentButton) {
                 currentNumber = [];
                 break;
             }
+        case "divide":
+            if (currentOp == undefined) {
+                storedNum = castToInt(currentNumber);
+                currentNumber = [];
+                currentOp = "divide";
+                break;
+            }
+            else if(currentOp != "divide"){
+                storedNum = operationDispatcher(currentOp);
+                display(storedNum);
+                currentNumber = [];
+                currentOp = "divide";
+                break;
+            }
+            else {
+                storedNum = divide(storedNum, castToInt(currentNumber));
+                display(storedNum);
+                currentNumber = [];
+                break;
+            }
+        case "compute":
+            if(currentOp != undefined){
+                storedNum = operationDispatcher(currentOp);
+                display(storedNum);
+                currentNumber = [];
+                castToArray(storedNum);
+                currentOp = undefined;
+                break;
+            }
     }
 }
 
-function opDispatcher(number1, number2, currentOp){
-    switch(currentOp){
+function operationDispatcher(operation){
+    switch(operation){
         case "add":
-            add(number1, number2, currentOp);
+            return add(storedNum, castToInt(currentNumber));
         case "subtract":
-            subtract(number1, number2, currentOp);
+            return subtract(storedNum, castToInt(currentNumber));
         case "multiply":
-            multiply(number1, number2, currentOp);
+            return multiply(storedNum, castToInt(currentNumber));
+        case "divide":
+            return divide(storedNum, castToInt(currentNumber));
     }
 }
 
@@ -106,12 +160,22 @@ function castToInt(arr) {
     return num;
 }
 
+function castToArray(num) {
+    let stringNum = num.toString();
+    for(index = 0; index < stringNum.length; index++){
+        constructNumber(stringNum[index]);
+    }
+}
+
 function resetDisplay() {
     document.querySelector(".ansbar").textContent = "0";
 }
 
 function display(numberOnScreen) {
-    if (typeof numberOnScreen != "number") {
+    if (numberOnScreen == "R U FR?"){
+        document.querySelector(".ansbar").textContent = numberOnScreen; 
+    }
+    else if (typeof numberOnScreen != "number") {
         document.querySelector(".ansbar").textContent = castToInt(numberOnScreen);
     }
     else {
@@ -129,20 +193,7 @@ function add(number1, number2) {
 }
 
 
-function subtract(number1, number2, currentOp) {
-    if (currentOp == undefined) {
-        storedNum = castToInt(currentNumber);
-        currentNumber = [];
-        currentOp = "subtract";
-    }
-    else if (currentOp != "subtract") {
-        opDispatcher(number1, number2, currentOp);
-    }
-    else {
-        storedNum = storedNum - castToInt(currentNumber);
-        display(storedNum);
-        currentNumber = [];
-    }
+function subtract(number1, number2) {
     return number1 - number2;
 }
 
@@ -152,7 +203,7 @@ function multiply(number1, number2) {
 
 function divide(number1, number2) {
     if (number2 == 0) {
-        return "R U FR?"
+        return ERROR_MESSAGE;
     }
     return number1 / number2;
 }
