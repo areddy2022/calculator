@@ -18,7 +18,7 @@ const BUTTON_MAPPINGS = {
     num3: 3, //Done
     add: "add", //Done
     num0: 0, //Done
-    decpoint: ".", //
+    decpoint: ".", //Done
     compute: "compute", //Done
 }
 
@@ -29,6 +29,7 @@ const buttons = document.querySelectorAll("button");
 let currentButton;
 let mappedButton;
 let currentNumber = [];
+let emptyNumber = [];
 let storedNum;
 let currentOp;
 
@@ -128,31 +129,36 @@ function eventHandler(currentButton) {
                 break;
             }
         case "compute":
-            if(currentOp != undefined){
+            if(currentOp != undefined && currentNumber.length != 0 && storedNum != null){
                 storedNum = operationDispatcher(currentOp);
                 display(storedNum);
                 currentNumber = [];
                 castToArray(storedNum);
                 currentOp = undefined;
-                break;
             }
+            break;
         case "AC":
             storedNum = 0;
             currentNumber = [];
             currentOp = undefined;
             resetDisplay();
+            break;
         case "flipsign":
-            let flippedNumber = -1 * castToNumber(currentNumber);
-            currentNumber = [];
-            castToArray(flippedNumber);
-            display(currentNumber);
+            if(currentNumber.length != 0 && storedNum != null){
+                let flippedNumber = -1 * castToNumber(currentNumber);
+                currentNumber = [];
+                castToArray(flippedNumber);
+                display(currentNumber);
+            }
             break;
         case "percent":
+        if(currentNumber.length != 0 && storedNum != null){
             let percentNumber = 0.01 * castToNumber(currentNumber);
             currentNumber = [];
             castToArray(percentNumber);
             display(currentNumber);
-            break;
+        }
+        break;
         case ".":
             if(!(currentNumber.includes("."))){
                 currentNumber.push(".");
