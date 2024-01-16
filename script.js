@@ -2,8 +2,8 @@
 
 const BUTTON_MAPPINGS = {
     AC: "AC",
-    flipsign: -1,
-    percent: 100,
+    flipsign: "flipsign", //Done
+    percent: "percent", //Done
     divide: "divide", //Done
     num7: 7, //Done
     num8: 8, //Done
@@ -18,7 +18,7 @@ const BUTTON_MAPPINGS = {
     num3: 3, //Done
     add: "add", //Done
     num0: 0, //Done
-    decpoint: ".",
+    decpoint: ".", //
     compute: "compute", //Done
 }
 
@@ -49,7 +49,7 @@ function eventHandler(currentButton) {
     switch(mappedButton){
         case "add":
             if (currentOp == undefined) {
-                storedNum = castToInt(currentNumber);
+                storedNum = castToNumber(currentNumber);
                 currentNumber = [];
                 currentOp = "add";
                 break;
@@ -62,14 +62,14 @@ function eventHandler(currentButton) {
                 break;
             }
             else {
-                storedNum = add(storedNum, castToInt(currentNumber));
+                storedNum = add(storedNum, castToNumber(currentNumber));
                 display(storedNum);
                 currentNumber = [];
                 break;
             }
         case "subtract":
             if (currentOp == undefined) {
-                storedNum = castToInt(currentNumber);
+                storedNum = castToNumber(currentNumber);
                 currentNumber = [];
                 currentOp = "subtract";
                 break;
@@ -82,14 +82,14 @@ function eventHandler(currentButton) {
                 break;
             }
             else {
-                storedNum = subtract(storedNum, castToInt(currentNumber));
+                storedNum = subtract(storedNum, castToNumber(currentNumber));
                 display(storedNum);
                 currentNumber = [];
                 break;
             }
         case "multiply":
             if (currentOp == undefined) {
-                storedNum = castToInt(currentNumber);
+                storedNum = castToNumber(currentNumber);
                 currentNumber = [];
                 currentOp = "multiply";
                 break;
@@ -102,14 +102,14 @@ function eventHandler(currentButton) {
                 break;
             }
             else {
-                storedNum = multiply(storedNum, castToInt(currentNumber));
+                storedNum = multiply(storedNum, castToNumber(currentNumber));
                 display(storedNum);
                 currentNumber = [];
                 break;
             }
         case "divide":
             if (currentOp == undefined) {
-                storedNum = castToInt(currentNumber);
+                storedNum = castToNumber(currentNumber);
                 currentNumber = [];
                 currentOp = "divide";
                 break;
@@ -122,7 +122,7 @@ function eventHandler(currentButton) {
                 break;
             }
             else {
-                storedNum = divide(storedNum, castToInt(currentNumber));
+                storedNum = divide(storedNum, castToNumber(currentNumber));
                 display(storedNum);
                 currentNumber = [];
                 break;
@@ -141,28 +141,42 @@ function eventHandler(currentButton) {
             currentNumber = [];
             currentOp = undefined;
             resetDisplay();
+        case "flipsign":
+            let flippedNumber = -1 * castToNumber(currentNumber);
+            currentNumber = [];
+            castToArray(flippedNumber);
+            display(currentNumber);
+            break;
+        case "percent":
+            let percentNumber = 0.01 * castToNumber(currentNumber);
+            currentNumber = [];
+            castToArray(percentNumber);
+            display(currentNumber);
+            break;
+        case ".":
+            
     }
 }
 
 function operationDispatcher(operation){
     switch(operation){
         case "add":
-            return add(storedNum, castToInt(currentNumber));
+            return add(storedNum, castToNumber(currentNumber));
         case "subtract":
-            return subtract(storedNum, castToInt(currentNumber));
+            return subtract(storedNum, castToNumber(currentNumber));
         case "multiply":
-            return multiply(storedNum, castToInt(currentNumber));
+            return multiply(storedNum, castToNumber(currentNumber));
         case "divide":
-            return divide(storedNum, castToInt(currentNumber));
+            return divide(storedNum, castToNumber(currentNumber));
     }
 }
 
-function castToInt(arr) {
-    let num = 0;
+function castToNumber(arr) {
+    let num = "";
     for (index in arr) {
-        num += arr[arr.length - index - 1] * (10 ** (index));
+        num += arr[index];
     }
-    return num;
+    return parseFloat(num);
 }
 
 function castToArray(num) {
@@ -181,15 +195,27 @@ function display(numberOnScreen) {
         document.querySelector(".ansbar").textContent = numberOnScreen; 
     }
     else if (typeof numberOnScreen != "number") {
-        document.querySelector(".ansbar").textContent = castToInt(numberOnScreen);
+        document.querySelector(".ansbar").textContent = castToNumber(numberOnScreen);
     }
     else {
-        document.querySelector(".ansbar").textContent = (numberOnScreen);
+        document.querySelector(".ansbar").textContent = truncate(numberOnScreen);
     }
 }
 
+function truncate(num){
+    numString = num.toString();
+    let finalNum = "";
+    for(let i = 0; i < 15; i++){
+        finalNum += numString[i];
+    }
+    return parseFloat(finalNum);
+}
+
 function constructNumber(nextDigit) {
-    currentNumber.push(nextDigit);
+    let stringNum = currentNumber.toString();
+    if(stringNum.length < 10){
+        currentNumber.push(nextDigit);
+    }
     return currentNumber;
 }
 
