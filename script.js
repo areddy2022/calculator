@@ -4,22 +4,22 @@ const BUTTON_MAPPINGS = {
     AC: "AC",
     flipsign: -1,
     percent: 100,
-    divide: "divide",
+    divide: "divide", //Done
     num7: 7, //Done
     num8: 8, //Done
     num9: 9, //Done
-    multiply: "multiply",
+    multiply: "multiply", //Done
     num4: 4, //Done
     num5: 5, //Done
     num6: 6, //Done
-    subtract: "subtract",
+    subtract: "subtract", //Done
     num1: 1, //Done
     num2: 2, //Done
     num3: 3, //Done
-    add: "add",
+    add: "add", //Done
     num0: 0, //Done
     decpoint: ".",
-    compute: "compute",
+    compute: "compute", //Done
 }
 
 const ERROR_MESSAGE = "R U FR?";
@@ -136,6 +136,11 @@ function eventHandler(currentButton) {
                 currentOp = undefined;
                 break;
             }
+        case "AC":
+            storedNum = 0;
+            currentNumber = [];
+            currentOp = undefined;
+            resetDisplay();
     }
 }
 
