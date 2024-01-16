@@ -1,5 +1,3 @@
-// Need to BUTTON_MAPPINGS multidimensional with two options number or button
-
 const BUTTON_MAPPINGS = {
     AC: "AC",
     flipsign: "flipsign", //Done
